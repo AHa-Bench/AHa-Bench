@@ -37,7 +37,7 @@ audio_col = 'audio'
 type_col = 'type'
 qid_col = 'question_id'
 
-output_dir = '/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/benchmark/kimi/dataset/aha_bench2'
+output_dir = 'kimi/dataset/aha_bench'
 os.makedirs(output_dir, exist_ok=True)
 
 results = []
