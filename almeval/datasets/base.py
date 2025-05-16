@@ -165,6 +165,7 @@ class AudioBaseDataset(Dataset):
 
         msg = {'index': item['index'], 'audio': [],
                'text': question, 'meta': self.meta}
+        
 
         if isinstance(audio_path, list):
             msg['audio'].extend(audio_path)
@@ -176,7 +177,14 @@ class AudioBaseDataset(Dataset):
             msg['meta']['subset'] = item['subset']
         if 'meta' in item:
             msg['meta'].update(item['meta'])
+            # print(1)
+
+        msg['meta']['type'] = item['type']
+        msg['meta']['lang'] = item['label']
+        msg['meta']['audio_path'] = item['audio_path']
+        
         return msg
+
 
     # Given the prediction file, return the evaluation results in the format of a dictionary or pandas dataframe
     @abstractmethod
