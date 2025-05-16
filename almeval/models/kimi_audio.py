@@ -1,16 +1,14 @@
 import sys
 sys.path.insert(0, 'almeval/models/kimi_audio') #noqa
-from kimia_infer.api.kimia import KimiAudio as KimiAudio_hf
+from .kimia_infer.api.kimia import KimiAudio as KimiAudio_hf
 
 from .base import BaseModel
-
-
 
 
 class KimiAudio(BaseModel):
     NAME = 'Kimi-Audio'
 
-    def __init__(self, model_path='moonshotai/Kimi-Audio-7B-Instruct', **kwargs):
+    def __init__(self, model_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/benchmark/huggingface.co/moonshotai/Kimi-Audio-7B-Instruct', **kwargs):
         assert model_path is not None
         self.model = KimiAudio_hf(
             model_path=model_path, load_detokenizer=False)
@@ -48,7 +46,6 @@ class KimiAudio(BaseModel):
         if prompt is not None or prompt.strip() != '':
             messages.append(
                 {'role': 'user', 'message_type': 'text', 'content': prompt})
-
         messages.append(
             {'role': 'user', 'message_type': 'audio', 'content': audio})
 
