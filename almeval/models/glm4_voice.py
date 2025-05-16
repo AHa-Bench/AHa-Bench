@@ -18,7 +18,7 @@ Semantic = ['homophone','inferredsound','knowledge','overreliance','polysemy','p
 class GLM4Voice(BaseModel):
     NAME = 'GLM4-Voice'
 
-    def __init__(self, model_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/huggingface.co/THUDM/glm-4-voice-9b',
+    def __init__(self, model_path='THUDM/glm-4-voice-9b',
                  device='cuda',
                  **kwargs):
         self.device = device
@@ -131,7 +131,7 @@ class GLM4Voice(BaseModel):
 
 
 class Glm4Tokenizer:
-    def __init__(self, tokenizer_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/huggingface.co/THUDM/glm-4-voice-tokenizer',
+    def __init__(self, tokenizer_path='THUDM/glm-4-voice-tokenizer',
                  device: str = 'cuda',):
         self.whisper_model = WhisperVQEncoder.from_pretrained(
             tokenizer_path).eval().to(device)
