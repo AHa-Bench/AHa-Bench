@@ -12,12 +12,13 @@ from .glm4voice.speech_tokenizer.modeling_whisper import WhisperVQEncoder
 from .glm4voice.speech_tokenizer.utils import extract_speech_token
 from .patch import (patch_chatglm_model_init,
                     patch_glm4_voice_update_model_kwargs_for_generation)
+Semantic = ['homophone','inferredsound','knowledge','overreliance','polysemy','prosodic']
 
 
 class GLM4Voice(BaseModel):
     NAME = 'GLM4-Voice'
 
-    def __init__(self, model_path='THUDM/glm-4-voice-9b',
+    def __init__(self, model_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/huggingface.co/THUDM/glm-4-voice-9b',
                  device='cuda',
                  **kwargs):
         self.device = device
@@ -55,20 +56,30 @@ class GLM4Voice(BaseModel):
         meta = msg['meta']
         prefix = '<|system|>\n'
         prompt = ''
-        if meta['task'] == 'ASR':
-            # from: https://arxiv.org/pdf/2502.11946
+
+        if 'asr' in meta['type']:
+            lang = meta['type'].split('_')[-1]
             prompt = prefix + '请写下你听到的语音内容。'
             prompt += ' listen to the audio carefully and respond with only text tokens'
-        elif meta['interactive'] == 'Audio-QA':
-            # from:https://github.com/THUDM/GLM-4-Voice/blob/eb00ce9142e8d98b0ed7c57cd47e0d6d5dce9a1a/web_demo.py#L91
-            prompt = self.DEFAULT_SYSTEM_PROMPT
-        elif meta['audio_type'] == 'AudioEvent':
-            prompt = f'请听音频后回答如下问题： {msg["text"]} .'
-        else:
-            # all other audio-analysis tasks.
+        elif any(a in meta['type'] for a in Semantic):
             prompt = prefix + msg['text']
-            # help to output text tokens.
             prompt += ' listen to the audio carefully and respond with only text tokens'
+        else:
+            prompt = f'请听音频后回答如下问题： {msg["text"]} .'
+
+
+        # if meta['task'] == 'ASR':
+        #     # from: https://arxiv.org/pdf/2502.11946
+        #     prompt = prefix + '请写下你听到的语音内容。'
+        #     prompt += ' listen to the audio carefully and respond with only text tokens'
+        # elif meta['interactive'] == 'Audio-QA':
+        #     # from:https://github.com/THUDM/GLM-4-Voice/blob/eb00ce9142e8d98b0ed7c57cd47e0d6d5dce9a1a/web_demo.py#L91
+        #     prompt = self.DEFAULT_SYSTEM_PROMPT
+        # elif meta['audio_type'] == 'AudioEvent':
+        #     prompt = f'请听音频后回答如下问题： {msg["text"]} .'
+        # else:
+        #     prompt = prefix + msg['text']
+        #     prompt += ' listen to the audio carefully and respond with only text tokens'
         return prompt
 
     def _generate(self, sysmtem_prompt, audio, meta, temperature=0.2, top_p=0.8, max_new_tokens=2048):
@@ -120,7 +131,7 @@ class GLM4Voice(BaseModel):
 
 
 class Glm4Tokenizer:
-    def __init__(self, tokenizer_path='THUDM/glm-4-voice-tokenizer',
+    def __init__(self, tokenizer_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/huggingface.co/THUDM/glm-4-voice-tokenizer',
                  device: str = 'cuda',):
         self.whisper_model = WhisperVQEncoder.from_pretrained(
             tokenizer_path).eval().to(device)
