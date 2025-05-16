@@ -16,7 +16,7 @@ Semantic = ['homophone','inferredsound','knowledge','overreliance','polysemy','p
 class Qwen2Audio(BaseModel):
     NAME = 'Qwen2-Audio-7B'
 
-    def __init__(self, model_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/benchmark/huggingface.co/Qwen/Qwen2-Audio-7B', **kwargs):
+    def __init__(self, model_path='Qwen/Qwen2-Audio-7B', **kwargs):
         assert model_path is not None
         self.model_path = model_path
         self.processor = AutoProcessor.from_pretrained(
@@ -100,7 +100,7 @@ class Qwen2Audio(BaseModel):
 class Qwen2AudioChat(BaseModel):
     NAME = 'Qwen2-Audio-7B-Instruct'
 
-    def __init__(self, model_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/benchmark/huggingface.co/Qwen/Qwen2-Audio-7B-Instruct', **kwargs):
+    def __init__(self, model_path='Qwen/Qwen2-Audio-7B-Instruct', **kwargs):
         self.processor = AutoProcessor.from_pretrained(
             model_path, trust_remote_code=True
         )
@@ -179,7 +179,7 @@ class Qwen2AudioChat(BaseModel):
 class QwenAudio(BaseModel):
     NAME = 'Qwen-Audio'
 
-    def __init__(self, model_path='/mnt/dolphinfs/hdd_pool/docker/user/hadoop-fsprisk/fudongjie/benchmark/huggingface.co/Qwen/Qwen-Audio', **kwargs):
+    def __init__(self, model_path='Qwen/Qwen-Audio', **kwargs):
         assert model_path is not None
         self.model_path = model_path
         self.tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
