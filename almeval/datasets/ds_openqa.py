@@ -298,3 +298,8 @@ class IfevalDataset(AudioOpenQADataset):
     DATASET_SERIES = 'VoiceBench'
     AUDIO_TYPE = 'Speech'
     INTERACTIVE = 'Audio-QA'
+    
+class aha(AudioOpenQADataset):
+    DATASET_NAME = 'aha'
+    DATASET_SERIES = 'aha'
+    AUDIO_TYPE = ''
